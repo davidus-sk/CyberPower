@@ -3,9 +3,20 @@
 class HttpRequest
 {
 	private $server = null;
+	
+	/**
+	 * TCP/IP port number
+	 * @var integer
+	 */
 	private $port = 80;
+
 	private $protocol = null;
 	private $baseUrl = null;
+
+	/**
+	 * Session ID for current fetch
+	 * @var integer
+	 */
 	private $sessionId = 0;
 
 	/**
@@ -14,14 +25,29 @@ class HttpRequest
 	 */
 	private $allowedProtocols = array('http', 'https');
 	
+	/**
+	 * Data returned from the server
+	 * @var string
+	 */
 	public $result = null;
 	
+	/**
+	 * Constructor
+	 * @param string $server
+	 * @param integer $port
+	 * @param string $protocol
+	 */
 	public function __construct($server, $port = 80, $protocol = 'http')
 	{
 		$this->server = $server;
 		$this->port = (int)$port;
 		$this->protocol = strtolower($protocol);
 		$this->sessionId = time();
+		
+		// check if we have server
+		if (empty($server)) {
+			throw new Exception('Please specify server address.');
+		}
 		
 		// check if we have valid port number
 		if ($port <= 0 || $port > 65535) {
@@ -34,6 +60,12 @@ class HttpRequest
 		}
 	}
 
+	/**
+	 * Create URL
+	 * @param string $path
+	 * @param array $params
+	 * @return string|bool
+	 */
 	private function createUrl($path = '/', $params = array())
 	{
 		// valid path has to start with /
@@ -46,7 +78,6 @@ class HttpRequest
 
 	/**
 	 * Perform HTTP GET request
-	 *
 	 * @param integer $path
 	 * @param array $params
 	 * @return bool
@@ -65,10 +96,9 @@ class HttpRequest
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 				curl_setopt($ch, CURLOPT_COOKIE, 'cocp=' . $this->sessionId);
-				curl_setopt ($ch, CURLOPT_MAXREDIRS, 2);
 				$result = curl_exec($ch);
 				curl_close($ch);
-var_dump($result);
+
 				if ($result !== false) {
 					$this->result = $result;
 
