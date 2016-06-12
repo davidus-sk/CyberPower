@@ -68,6 +68,24 @@ class RMCARD203
 		$this->hr->get('/logout.html');
 	}
 
+	public function getOutletData()
+	{
+		$data = array();
+
+		$this->hr->get('/summary_status.html');
+
+		if ($this->hr->result) {
+			// <span class="outletOnState">01</span>
+			if (preg_match_all('/<span class="outlet(On|Off)State">([0-9]+)</span>/', $this->hr->result, $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $value) {
+					$data[$value[2]] = ($value[1] == "On") ? true : false;
+				}
+			}
+		}
+
+		return $data;
+	}
+
 	public function getEnvironmentalData()
 	{
 		$data = array(
