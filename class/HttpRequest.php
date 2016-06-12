@@ -54,17 +54,17 @@ class HttpRequest
 		if (!empty($path)) {
 			// get path
 			$url = $this->createUrl($path, $params);
-			
+			echo $url . "<br />";
 			if ($url) {
 				// do curl request
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_HEADER, false);
+				curl_setopt($ch, CURLOPT_HEADER, true);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_COOKIEJAR, '/tmp/cookie');
 				curl_setopt($ch, CURLOPT_COOKIEFILE, '/tmp/cookie');
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-				curl_setopt ($ch, CURLOPT_MAXREDIRS, 2);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+				curl_setopt ($ch, CURLOPT_MAXREDIRS, 0);
 				$result = curl_exec($ch);
 				curl_close($ch);
 var_dump($result);
