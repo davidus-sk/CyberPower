@@ -2,10 +2,12 @@
 
 include('class/RMCARD203.php');
 
-$o = new RMCARD203('10.23.55.23', 'cyber', 'cyber');
+$r = new RMCARD203('10.23.55.23', 'cyber', 'cyber');
 
-$e = $o->getEnvironmentalData();
+$e = $r->getEnvironmentalData();
+$o = $r->getOutletData();
 
 var_dump($e);
+var_dump($o);
 
-unset($o);
+unset($r);
