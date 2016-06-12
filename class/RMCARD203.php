@@ -44,6 +44,14 @@ class RMCARD203
 		$this->login();
 	}
 	
+	/**
+	 * Destructor
+	 */
+	public function __destruct()
+	{
+		$this->logout();
+	}
+
 	private function login()
 	{
 		$this->hr = new HttpRequest($this->ipAddress);
@@ -54,7 +62,12 @@ class RMCARD203
 			'action' => 'LOGIN'
 		));
 	}
-	
+
+	private function logout()
+	{
+		$this->hr->get('/logout.html');
+	}
+
 	public function getEnvironmentalData()
 	{
 		$data = array(
