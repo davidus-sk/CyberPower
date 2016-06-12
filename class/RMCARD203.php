@@ -76,7 +76,7 @@ class RMCARD203
 
 		if ($this->hr->result) {
 			// <span class="outletOnState">01</span>
-			if (preg_match_all('/<span class="outlet(On|Off)State">([0-9]+)</span>/', $this->hr->result, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<span class="outlet(On|Off)State">([0-9]+)<\/span>/', $this->hr->result, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $value) {
 					$data[$value[2]] = ($value[1] == "On") ? true : false;
 				}
