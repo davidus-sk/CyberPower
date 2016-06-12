@@ -6,6 +6,7 @@ class HttpRequest
 	private $port = 80;
 	private $protocol = null;
 	private $baseUrl = null;
+	private $sessionId = 0;
 
 	/**
 	 * Supported URL protocols
@@ -20,6 +21,7 @@ class HttpRequest
 		$this->server = $server;
 		$this->port = (int)$port;
 		$this->protocol = strtolower($protocol);
+		$this->sessionId = time();
 		
 		// check if we have valid port number
 		if ($port <= 0 || $port > 65535) {
@@ -61,10 +63,9 @@ class HttpRequest
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_HEADER, true);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_COOKIEJAR, '/tmp/cookie');
-				curl_setopt($ch, CURLOPT_COOKIEFILE, '/tmp/cookie');
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-				curl_setopt ($ch, CURLOPT_MAXREDIRS, 0);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch, CURLOPT_COOKIE, 'cocp=' . $this->sessionId);
+				curl_setopt ($ch, CURLOPT_MAXREDIRS, 2);
 				$result = curl_exec($ch);
 				curl_close($ch);
 var_dump($result);
