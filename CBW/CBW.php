@@ -41,9 +41,10 @@ class CBW
 	
 	/**
 	 * Get sensor's numerical values
+	 * @param array $fields
 	 * @return array
 	 */
-	private function processXml()
+	private function processXml($fields = array())
 	{
 		$data = array();
 		
@@ -52,16 +53,16 @@ class CBW
 
 		if ($xml) {
 			// loop over the four 1-wire sensors
-			for ($i = 1; $i <= 4; $i++) {
-				if (is_numeric($xml->{'sensor' . $i})) {
-					$data[$i] = $xml->{'sensor' . $i} * 1;
+			foreach ($fields as $key => $field) {
+				if (!empty($xml->{$field})) {
+					$data[$key] = $xml->{$field} * 1;
 				} else {
 					// some of these inputs tend to flip-flop, let's try this couple of times
-					for ($j = 1; $j <= 4; $j++) {
+					for ($j = 0; $j < 4; $j++) {
 						$xml = $this->getXml();
 
-						if ($xml && is_numeric($xml->{'sensor' . $i})) {
-							$data[$i] = $xml->{'sensor' . $i} * 1;
+						if ($xml && !empty($xml->{$field})) {
+							$data[$key] = $xml->{$field} * 1;
 							break;
 						}//if
 						
@@ -83,7 +84,7 @@ class CBW
 	 */
 	public function get1WireData($legend = array())
 	{
-		$data = $this->processXml();
+		$data = $this->processXml(array('sensor1', 'sensor2', 'sensor3', 'sensor4'));
 
 		if (empty($legend)) {
 			return $data;
@@ -94,8 +95,8 @@ class CBW
 			foreach ($legend as $name => $unit) {
 				$output[] = array(
 					'name' => $name,
-					'value' => $data[$i],
-					'string' => $data[$i] . ' ' . $unit
+					'value' => empty($data[$i]) ? null : $data[$i],
+					'string' => empty($data[$i]) ? null : ($data[$i] . ' ' . $unit)
 				);
 
 				$i++;
