@@ -19,10 +19,10 @@ $data = $cbw->get1WireData(array(
 $rrd = new RRD(dirname(__FILE__) . '/vue.rrd');
 
 $fields = array(
-	array('name' => 'vueTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE Temp', 'unit' => '°F', 'color'=>'1f77b4', 'graph' => 'AREA'),
-	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%RH', 'color' => 'ff7f0e', 'graph' => 'LINE3'),
-	array('name' => 'jbTemp', 'min' => -50, 'max' => 200, 'label' => 'JB Temp', 'unit' => '°F', 'color' => '2ca02c', 'graph' => 'AREA'),
-	array('name' => 'vueLedTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE LED Temp', 'unit' => '°F', 'color' => 'd62728', 'graph' => 'AREA'),
+	array('name' => 'vueTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE Temp', 'unit' => '°F', 'color'=>'1f77b40F', 'graph' => 'AREA'),
+	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%RH', 'color' => 'ff7f0e0F', 'graph' => 'LINE3'),
+	array('name' => 'jbTemp', 'min' => -50, 'max' => 200, 'label' => 'JB Temp', 'unit' => '°F', 'color' => '2ca02c0F', 'graph' => 'AREA'),
+	array('name' => 'vueLedTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE LED Temp', 'unit' => '°F', 'color' => 'd627280F', 'graph' => 'AREA'),
 );
 
 // create DB if needed
