@@ -25,17 +25,13 @@ class RRD
 	{
 		if (!empty($this->filename) && is_array($fields) && !empty($fields)) {
 			if (!file_exists($this->filename)) {
-				$command = 'rrdtool create ' . $this->filename . ' --step 60 \\';
+				$command = 'rrdtool create ' . $this->filename . ' --step 60 ';
 
 				foreach ($fields as $field) {
-					$command .= 'DS:' . $field['name'] . ':GAUGE:120:' . $field['min'] . ':' . $field['max'] . ' \\';
+					$command .= 'DS:' . $field['name'] . ':GAUGE:120:' . $field['min'] . ':' . $field['max'] . ' ';
 				}
 
-				$command .= '
-					RRA:AVERAGE:0.5:1:1200 \
-					RRA:MIN:0.5:12:2400 \
-					RRA:MAX:0.5:12:2400 \
-					RRA:AVERAGE:0.5:12:2400';
+				$command .= 'RRA:AVERAGE:0.5:1:1200 RRA:MIN:0.5:12:2400 RRA:MAX:0.5:12:2400 RRA:AVERAGE:0.5:12:2400';
 
 				`$command`;
 			}
