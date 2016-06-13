@@ -90,7 +90,7 @@ class CBW
 			return $data;
 		} else {
 			$output = array();
-			$i = 1;
+			$i = 0;
 
 			foreach ($legend as $name => $unit) {
 				$output[] = array(
