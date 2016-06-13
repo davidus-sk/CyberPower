@@ -32,7 +32,7 @@ class RMCARD
 	 * Use MD5 for authentication
 	 * @var boolean
 	 */
-	private $userMd5 = false;
+	private $useMd5 = false;
 
 	/**
 	 * HttpRequest object
@@ -51,7 +51,7 @@ class RMCARD
 		$this->host = $host;
 		$this->username = $username;
 		$this->password = $password;
-		$this->userMd5 = $useMd5;
+		$this->useMd5 = $useMd5;
 
 		// login
 		$this->login();
@@ -73,8 +73,8 @@ class RMCARD
 	{
 		$this->hr = new HttpRequest($this->host);
 		$this->hr->get('/login.cgi', array(
-			'username' => $this->userMd5 ? md5($this->username) : $this->username,
-			'password' => $this->userMd5 ? md5($this->password) : $this->password,
+			'username' => $this->useMd5 ? md5($this->username) : $this->username,
+			'password' => $this->useMd5 ? md5($this->password) : $this->password,
 			'SelLan' => 0,
 			'action' => 'LOGIN'
 		));

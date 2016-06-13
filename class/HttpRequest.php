@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Simple HTTP class for the RM Card
+ * 
+ * (c) 2015 David Ponevac (david at davidus dot sk) www.davidus.sk
+ */
 class HttpRequest
 {
 	private $server = null;
@@ -87,7 +92,7 @@ class HttpRequest
 		if (!empty($path)) {
 			// get path
 			$url = $this->createUrl($path, $params);
-			echo $url . "<br />";
+
 			if ($url) {
 				// do curl request
 				$ch = curl_init();

@@ -3,7 +3,9 @@
 include('RMCARD.php');
 
 /**
- * CyberPower ATS class
+ * CyberPower ATS remote monitoring class
+ * 
+ * (c) 2015 David Ponevac (david at davidus dot sk) www.davidus.sk
  * 
  * This piece of code should extract the followind data:
  * 
@@ -15,6 +17,14 @@ include('RMCARD.php');
  * - Power [status_update.html]
  * - Energy [status_update.html]
  * - Power source data [status_update.html]
+ * 
+ * Usage:
+ * 
+ * include('class/CPATS.php');
+ * $o = new CPATS('10.23.55.23', 'cyber', 'cyber');
+ * $d = $r->getAllData();
+ * var_dump($d);
+ * unset($o);
  * 
  */
 class CPATS extends RMCARD
@@ -94,7 +104,7 @@ class CPATS extends RMCARD
 	}
 	
 	/**
-	 * 
+	 * Get ATS status data
 	 * @return array
 	 */
 	public function getStatusData()
@@ -203,10 +213,14 @@ class CPATS extends RMCARD
 	 */
 	public function getAllData()
 	{
-		$environmental = $this->getEnvironmentalData();
+		$environmental = array(
+			'environmental' => $this->getEnvironmentalData()
+		);
+
 		$outlet = array(
 			'outlets' => $this->getOutletData()
 		);
+
 		$status = $this->getStatusData();
 		
 		return array_merge($environmental, $outlet, $status);
