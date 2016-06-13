@@ -32,7 +32,6 @@ class RRD
 				}
 
 				$command .= 'RRA:AVERAGE:0.5:1:1200 RRA:MIN:0.5:12:2400 RRA:MAX:0.5:12:2400 RRA:AVERAGE:0.5:12:2400';
-
 				`$command`;
 			}
 		} else {
@@ -49,10 +48,20 @@ class RRD
 	{
 		if (is_array($data) && !empty($data)) {
 			$command = 'rrdtool update ' . $this->filename . ' N:' . join(':', $data);
-
 			`$command`;
 		} else {
 			throw new Exception('Required data is missing.');
 		}
+	}
+	
+	public function graph($fields)
+	{
+		$command = 'rrdtool graph /var/www/graph.png -w 785 -h 120 -a PNG --slope-mode --start -604800 --end now --vertical-label "Temperature (°F)" ';
+		$command .= join(' ', array_map(function($a) {
+			return 'DEF:' . $a['name'] . '=' . $this->filename . ':' . $a['name'] . ':AVERAGE ' .
+					'LINE1:' . $a['name'] . '#' . $a['color'] . ':"' . $a['label'] . '" ';
+		}, $fields));
+
+		`$command`;
 	}
 }
