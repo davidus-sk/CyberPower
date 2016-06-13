@@ -34,5 +34,5 @@ $rrd->update(array_map(function($a) {
 }, $data));
 
 // graph DB
-$rrd->graph($fields, 86400, '/var/www/vue/graph_day.png');
-$rrd->graph($fields, 604800, '/var/www/vue/graph_week.png');
+$rrd->graph($fields, -86400, '/var/www/vue/graph_day.png');
+$rrd->graph($fields, -604800, '/var/www/vue/graph_week.png');
