@@ -129,67 +129,67 @@ class CPATS extends RMCARD
 
 		if ($this->hr->result) {
 			// selected source
-			if (preg_match('/selected source<\/span>\s*<span class="txt">source\s+([a-z])/gi', $this->hr->result, $matches)) {
+			if (preg_match('/selected source<\/span>\s*<span class="txt">source\s+([a-z])/i', $this->hr->result, $matches)) {
 				$source = strtolower($matches[1]);
 				$data[$source]['selected'] = true;
 			}
 			
 			// preferred source
-			if (preg_match('/preferred source<\/span>\s*<span class="txt">source\s+([a-z])/gi', $this->hr->result, $matches)) {
+			if (preg_match('/preferred source<\/span>\s*<span class="txt">source\s+([a-z])/i', $this->hr->result, $matches)) {
 				$source = strtolower($matches[1]);
 				$data[$source]['preferred'] = true;
 			}
 			
 			// source voltage
-			if (preg_match('/source voltage \(a\/b\)<\/span>\s*<span class="txt">([0-9\.]+)\s*\/?\s*([0-9\.]*)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/source voltage \(a\/b\)<\/span>\s*<span class="txt">([0-9\.]+)\s*\/?\s*([0-9\.]*)/i', $this->hr->result, $matches)) {
 				$data[$source]['a']['voltage'] = $matches[1];
 				$data[$source]['b']['voltage'] = $matches[2];
 			}
 			
 			// frequency
-			if (preg_match('/source frequency \(a\/b\)<\/span>\s*<span class="txt">([0-9\.]+)\s*\/?\s*([0-9\.]*)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/source frequency \(a\/b\)<\/span>\s*<span class="txt">([0-9\.]+)\s*\/?\s*([0-9\.]*)/i', $this->hr->result, $matches)) {
 				$data[$source]['a']['frequency'] = $matches[1];
 				$data[$source]['b']['frequency'] = $matches[2];
 			}
 			
 			// status
-			if (preg_match('/source status \(a\/b\)<\/span>\s*<span class="txt">([a-z]+)\s*\/?\s*([a-z]*)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/source status \(a\/b\)<\/span>\s*<span class="txt">([a-z]+)\s*\/?\s*([a-z]*)/i', $this->hr->result, $matches)) {
 				$data[$source]['a']['status'] = ($matches[1] == 'OK') ? true : false;
 				$data[$source]['b']['status'] = ($matches[2] == 'OK') ? true : false;
 			}
 
 			// phase sync
-			if (preg_match('/phase synchronization<\/span>\s*<span class="txt">([a-z]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/phase synchronization<\/span>\s*<span class="txt">([a-z]+)/i', $this->hr->result, $matches)) {
 				$data['phaseSynchronization'] = ($matches[1] == 'No') ? false : true;
 			}
 
 			// total load
-			if (preg_match('/total\s+load<\/span>\s*<span class="txt">([0-9\.]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/total\s+load<\/span>\s*<span class="txt">([0-9\.]+)/i', $this->hr->result, $matches)) {
 				$data['totalLoad'] = floatval($matches[1]);
 			}
 
 			// total power
-			if (preg_match('/total\s+power<\/span>\s*<span class="txt">([0-9\.]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/total\s+power<\/span>\s*<span class="txt">([0-9\.]+)/i', $this->hr->result, $matches)) {
 				$data['totalPower'] = floatval($matches[1]);
 			}
 
 			// peak load
-			if (preg_match('/peak\s+load<\/span>\s*<span class="l2b txt">([0-9\.]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/peak\s+load<\/span>\s*<span class="l2b txt">([0-9\.]+)/i', $this->hr->result, $matches)) {
 				$data['peakLoad'] = floatval($matches[1]);
 			}
 
 			// energy
-			if (preg_match('/energy<\/span>\s*<span class="l2b txt">([0-9\.]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/energy<\/span>\s*<span class="l2b txt">([0-9\.]+)/i', $this->hr->result, $matches)) {
 				$data['energy'] = floatval($matches[1]);
 			}
 
 			// PS status
-			if (preg_match('/power supply status<\/span>\s*<span class="txt">([a-z]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/power supply status<\/span>\s*<span class="txt">([a-z]+)/i', $this->hr->result, $matches)) {
 				$data['powerSupplyStatus'] = ($matches[1] == 'OK') ? true : false;
 			}
 
 			// comm status
-			if (preg_match('/communication status<\/span>\s*<span class="txt">([a-z]+)/gi', $this->hr->result, $matches)) {
+			if (preg_match('/communication status<\/span>\s*<span class="txt">([a-z]+)/i', $this->hr->result, $matches)) {
 				$data['communicationStatus'] = ($matches[1] == 'OK') ? true : false;
 			}
 		}
@@ -204,7 +204,9 @@ class CPATS extends RMCARD
 	public function getAllData()
 	{
 		$environmental = $this->getEnvironmentalData();
-		$outlet = $this->getOutletData();
+		$outlet = array(
+			'outlets' => $this->getOutletData()
+		);
 		$status = $this->getStatusData();
 		
 		return array_merge($environmental, $outlet, $status);
