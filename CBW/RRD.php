@@ -65,7 +65,8 @@ class RRD
 			$command = 'rrdtool graph ' . $outputFile . ' -w 1000 -h 300 -a PNG --slope-mode --start ' . $start . ' --end now --vertical-label "Temperature (°F)" ';
 			$command .= join(' ', array_map(function($a) {
 				return 'DEF:' . $a['name'] . '=' . $this->filename . ':' . $a['name'] . ':AVERAGE ' .
-						'LINE1:' . $a['name'] . '#' . $a['color'] . ':"' . $a['label'] . '" GPRINT:'. $a['name'] . ':LAST:"%6.2lf" ';
+						$a['graph'] . ':' . $a['name'] . '#' . $a['color'] . ':"' . $a['label'] . '" ' .
+						'GPRINT:'. $a['name'] . ':LAST:"%6.2lf ' . $a['units'] . '" ';
 			}, $fields));
 
 			`$command`;
