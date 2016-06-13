@@ -59,10 +59,10 @@ class RRD
 	 * @param array $fields
 	 * @throws Exception
 	 */
-	public function graph($fields)
+	public function graph($fields, $start, $outputFile)
 	{
 		if (is_array($fields) && !empty($fields)) {
-			$command = 'rrdtool graph /var/www/html/graph.png -w 785 -h 120 -a PNG --slope-mode --start -604800 --end now --vertical-label "Temperature (°F)" ';
+			$command = 'rrdtool graph ' . $outputFile . ' -w 1000 -h 300 -a PNG --slope-mode --start ' . $start . ' --end now --vertical-label "Temperature (°F)" ';
 			$command .= join(' ', array_map(function($a) {
 				return 'DEF:' . $a['name'] . '=' . $this->filename . ':' . $a['name'] . ':AVERAGE ' .
 						'LINE1:' . $a['name'] . '#' . $a['color'] . ':"' . $a['label'] . '" GPRINT:'. $a['name'] . ':LAST:"%6.2lf" ';

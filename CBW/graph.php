@@ -18,13 +18,15 @@ $data = $cbw->get1WireData(array(
 // init RRD class
 $rrd = new RRD(dirname(__FILE__) . '/vue.rrd');
 
+$fields = array(
+	array('name' => 'vueTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE Temp', 'unit' => '°F', 'color'=>'1f77b4'),
+	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%RH', 'color' => 'ff7f0e'),
+	array('name' => 'jbTemp', 'min' => -50, 'max' => 200, 'label' => 'JB Temp', 'unit' => '°F', 'color' => '2ca02c'),
+	array('name' => 'vueLedTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE LED Temp', 'unit' => '°F', 'color' => 'd62728'),
+);
+
 // create DB if needed
-$rrd->create(array(
-	array('name' => 'vueTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE Temp', 'unit' => '°F'),
-	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%RH'),
-	array('name' => 'jbTemp', 'min' => -50, 'max' => 200, 'label' => 'JB Temp', 'unit' => '°F'),
-	array('name' => 'vueLedTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE LED Temp', 'unit' => '°F'),
-));
+$rrd->create($fields);
 
 // update DB
 $rrd->update(array_map(function($a) {
@@ -32,9 +34,5 @@ $rrd->update(array_map(function($a) {
 }, $data));
 
 // graph DB
-$rrd->graph(array(
-	array('name' => 'vueTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE Temp', 'unit' => '°F', 'color'=>'1f77b4'),
-	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%RH', 'color' => 'ff7f0e'),
-	array('name' => 'jbTemp', 'min' => -50, 'max' => 200, 'label' => 'JB Temp', 'unit' => '°F', 'color' => '2ca02c'),
-	array('name' => 'vueLedTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE LED Temp', 'unit' => '°F', 'color' => 'd62728'),
-));
+$rrd->graph($fields, 86400, '/var/www/vue/graph_day.png');
+$rrd->graph($fields, 604800, '/var/www/vue/graph_week.png');
