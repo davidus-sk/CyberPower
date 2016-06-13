@@ -55,14 +55,14 @@ class CBW
 			// loop over the four 1-wire sensors
 			foreach ($fields as $key => $field) {
 				if (!empty($xml->{$field})) {
-					$data[$key] = $xml->{$field} * 1;
+					$data[$key] = filter_var($xml->{$field}, FILTER_SANITIZE_NUMBER_FLOAT);
 				} else {
 					// some of these inputs tend to flip-flop, let's try this couple of times
 					for ($j = 0; $j < 4; $j++) {
 						$xml = $this->getXml();
 
 						if ($xml && !empty($xml->{$field})) {
-							$data[$key] = $xml->{$field} * 1;
+							$data[$key] = filter_var($xml->{$field}, FILTER_SANITIZE_NUMBER_FLOAT);
 							break;
 						}//if
 						
