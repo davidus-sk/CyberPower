@@ -1,13 +1,11 @@
 <?php
 
-include('class/RMCARD203.php');
+include('class/CPATS.php');
 
-$r = new RMCARD203('10.23.55.23', 'cyber', 'cyber');
+$r = new CPATS('10.23.55.23', 'cyber', 'cyber');
 
-$e = $r->getEnvironmentalData();
-$o = $r->getOutletData();
+$e = $r->getAllData();
 
 var_dump($e);
-var_dump($o);
 
 unset($r);
