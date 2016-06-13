@@ -131,31 +131,31 @@ class CPATS extends RMCARD
 			// selected source
 			if (preg_match('/selected source<\/span>\s*<span class="txt">source\s+([a-z])/i', $this->hr->result, $matches)) {
 				$source = strtolower($matches[1]);
-				$data[$source]['selected'] = true;
+				$data['source'][$source]['selected'] = true;
 			}
 			
 			// preferred source
 			if (preg_match('/preferred source<\/span>\s*<span class="txt">source\s+([a-z])/i', $this->hr->result, $matches)) {
 				$source = strtolower($matches[1]);
-				$data[$source]['preferred'] = true;
+				$data['source'][$source]['preferred'] = true;
 			}
 			
 			// source voltage
 			if (preg_match('/source voltage \(a\/b\)<\/span>\s*<span class="txt">([0-9\.]+)\s*\/?\s*([0-9\.]*)/i', $this->hr->result, $matches)) {
-				$data[$source]['a']['voltage'] = $matches[1];
-				$data[$source]['b']['voltage'] = $matches[2];
+				$data['source']['a']['voltage'] = $matches[1];
+				$data['source']['b']['voltage'] = $matches[2];
 			}
 			
 			// frequency
 			if (preg_match('/source frequency \(a\/b\)<\/span>\s*<span class="txt">([0-9\.]+)\s*\/?\s*([0-9\.]*)/i', $this->hr->result, $matches)) {
-				$data[$source]['a']['frequency'] = $matches[1];
-				$data[$source]['b']['frequency'] = $matches[2];
+				$data['source']['a']['frequency'] = $matches[1];
+				$data['source']['b']['frequency'] = $matches[2];
 			}
 			
 			// status
 			if (preg_match('/source status \(a\/b\)<\/span>\s*<span class="txt">([a-z]+)\s*\/?\s*([a-z]*)/i', $this->hr->result, $matches)) {
-				$data[$source]['a']['status'] = ($matches[1] == 'OK') ? true : false;
-				$data[$source]['b']['status'] = ($matches[2] == 'OK') ? true : false;
+				$data['source']['a']['status'] = ($matches[1] == 'OK') ? true : false;
+				$data['source']['b']['status'] = ($matches[2] == 'OK') ? true : false;
 			}
 
 			// phase sync
