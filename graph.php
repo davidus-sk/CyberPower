@@ -13,6 +13,8 @@ $data = $ats->getAllData();
 // destroy and logout from ATS
 unset ($ats);
 
+// power
+
 // init RRD class
 $rrd = new RRD(dirname(__FILE__) . '/ats_power.rrd');
 
@@ -35,3 +37,27 @@ $rrd->update(array(
 // graph DB
 $rrd->graph($fields, -86400, '/var/www/vue/graph_ats_power_day.png');
 $rrd->graph($fields, -604800, '/var/www/vue/graph_ats_power_week.png');
+
+// environmental
+
+// init RRD class
+$rrd = new RRD(dirname(__FILE__) . '/ats_environmental.rrd');
+
+$fields = array(
+	array('name' => 'temp', 'min' => -50, 'max' => 200, 'label' => 'Temperature', 'unit' => '°F', 'color'=>'1f77b45A', 'graph' => 'AREA'),
+	array('name' => 'hum', 'min' => 0, 'max' => 100, 'label' => 'Humidity', 'unit' => '%%RH', 'color' => '2ca02c', 'graph' => 'LINE3'),
+);
+
+// create DB if needed
+$rrd->create($fields);
+
+// update DB
+$rrd->update(array(
+	$data['environmental']['temperature'] * (9/5) + 32,
+	$data['environmental']['humidity']
+));
+
+// graph DB
+$rrd->graph($fields, -86400, '/var/www/vue/graph_ats_environmental_day.png');
+$rrd->graph($fields, -604800, '/var/www/vue/graph_ats_environmental_week.png');
+
