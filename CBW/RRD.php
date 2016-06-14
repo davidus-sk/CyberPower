@@ -67,7 +67,7 @@ class RRD
 				return 'DEF:' . $a['name'] . '=' . $this->filename . ':' . $a['name'] . ':AVERAGE ' .
 						$a['graph'] . ':' . $a['name'] . '#' . $a['color'] . ':"' . $a['label'] . '" ' .
 						'LINE1:' . $a['name'] . '#' . substr($a['color'], 0, 6) . ' '.
-						'GPRINT:'. $a['name'] . ':LAST:"%6.2lf ' . $a['units'] . '" ';
+						'GPRINT:'. $a['name'] . ':LAST:"%6.2lf ' . $a['unit'] . '" ';
 			}, $fields));
 
 			`$command`;
