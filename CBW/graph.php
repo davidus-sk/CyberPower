@@ -20,7 +20,7 @@ $rrd = new RRD(dirname(__FILE__) . '/vue.rrd');
 
 $fields = array(
 	array('name' => 'vueTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE Temperature', 'unit' => '°F', 'color'=>'1f77b45A', 'graph' => 'AREA'),
-	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%RH', 'color' => 'ff7f0e', 'graph' => 'LINE3'),
+	array('name' => 'vueHum', 'min' => 0, 'max' => 100, 'label' => 'VUE Humidity', 'unit' => '%%RH', 'color' => 'ff7f0e', 'graph' => 'LINE3'),
 	array('name' => 'jbTemp', 'min' => -50, 'max' => 200, 'label' => 'JB Temperature', 'unit' => '°F', 'color' => '2ca02c5A', 'graph' => 'AREA'),
 	array('name' => 'vueLedTemp', 'min' => -50, 'max' => 200, 'label' => 'VUE LED Temperature', 'unit' => '°F', 'color' => 'd627285A', 'graph' => 'AREA'),
 );

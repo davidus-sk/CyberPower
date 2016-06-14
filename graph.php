@@ -10,6 +10,7 @@ $ats = new CPATS('10.23.55.23', 'cyber', 'cyber');
 // get all merged data
 $data = $ats->getAllData();
 
+// destroy and logout from ATS
 unset ($ats);
 
 // init RRD class
@@ -17,8 +18,8 @@ $rrd = new RRD(dirname(__FILE__) . '/ats_power.rrd');
 
 $fields = array(
 	array('name' => 'power', 'min' => 0, 'max' => 1000, 'label' => 'Power', 'unit' => 'W', 'color'=>'1f77b45A', 'graph' => 'AREA'),
-	array('name' => 'energy', 'min' => 0, 'max' => 1000, 'label' => 'Energy', 'unit' => 'kWh', 'color' => 'ff7f0e', 'graph' => 'AREA'),
-	array('name' => 'load', 'min' => 0, 'max' => 20, 'label' => 'Load', 'unit' => 'A', 'color' => '2ca02c5A', 'graph' => 'LINE3'),
+	array('name' => 'energy', 'min' => 0, 'max' => 1000, 'label' => 'Energy', 'unit' => 'kWh', 'color' => 'ff7f0e5A', 'graph' => 'AREA'),
+	array('name' => 'load', 'min' => 0, 'max' => 20, 'label' => 'Load', 'unit' => 'A', 'color' => '2ca02c', 'graph' => 'LINE3'),
 );
 
 // create DB if needed
