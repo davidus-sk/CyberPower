@@ -86,17 +86,17 @@ class CPATS extends RMCARD
 
 		if ($this->hr->result) {
 			// get temp: <td id="Temper" class="summaryTxt">75.0&deg;F</td>
-			if (preg_match('/id="Temper"\s+[^>]+>([0-9\.\-]+)&deg;(.)/', $this->hr->result, $matches)) {
-				if ($matches[2] == 'F') {
-					$data['temperature'] = ($matches[1] - 32) * (5/9);
+			if (preg_match('/id="Temper"\s+[^>]+>(<font[^>]+>)?([0-9\.\-]+)(<\/font>)?&deg;(.)/', $this->hr->result, $matches)) {
+				if ($matches[4] == 'F') {
+					$data['temperature'] = ($matches[2] - 32) * (5/9);
 				} else {
-					$data['temperature'] = floatval($matches[1]);
+					$data['temperature'] = floatval($matches[2]);
 				}
 			}
 
 			// get humidity: <td id="Humid" class="summaryTxt">70%RH</td>
-			if (preg_match('/id="Humid"\s+[^>]+>([0-9\.\-]+)/', $this->hr->result, $matches)) {
-				$data['humidity'] = intval($matches[1]);
+			if (preg_match('/id="Humid"\s+[^>]+>(<font[^>]+>)?([0-9\.\-]+)/', $this->hr->result, $matches)) {
+				$data['humidity'] = intval($matches[2]);
 			}
 		}
 
