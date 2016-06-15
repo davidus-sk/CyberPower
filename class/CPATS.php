@@ -79,7 +79,8 @@ class CPATS extends RMCARD
 	{
 		$data = array(
 			'temperature' => false,
-			'humidity' => false
+			'humidity' => false,
+			'dewPoint' => false,
 		);
 
 		$this->hr->get('/summary_env_status.html');
@@ -97,6 +98,10 @@ class CPATS extends RMCARD
 			// get humidity: <td id="Humid" class="summaryTxt">70%RH</td>
 			if (preg_match('/id="Humid"\s+[^>]+>(<font[^>]+>)?([0-9\.\-]+)/', $this->hr->result, $matches)) {
 				$data['humidity'] = intval($matches[2]);
+			}
+			
+			if ($data['temperature'] !== false && $data['humidity'] !== false) {
+				$data['dewPoint'] = $data['temperature'] - ((100 - $data['humidity']) / 5);
 			}
 		}
 
