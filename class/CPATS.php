@@ -1,11 +1,12 @@
 <?php
 
-include('RMCARD.php');
+// include required classes
+include(dirname(__FILE__) . '/RMCARD.php');
 
 /**
  * CyberPower ATS remote monitoring class
  * 
- * (c) 2015 David Ponevac (david at davidus dot sk) www.davidus.sk
+ * (c) 2016 David Ponevac (david at davidus dot sk) www.davidus.sk
  * 
  * This piece of code should extract the followind data:
  * 
@@ -22,13 +23,19 @@ include('RMCARD.php');
  * 
  * include('class/CPATS.php');
  * $o = new CPATS('10.23.55.23', 'cyber', 'cyber');
- * $d = $r->getAllData();
+ * $d = $o->getAllData();
  * var_dump($d);
  * unset($o);
  * 
  */
 class CPATS extends RMCARD
 {
+	/**
+	 * Does this ATS report humidity and temperature?
+	 * @var boolean
+	 */
+	public $hasEnvironmentalData = false;
+
 	/**
 	 * Class constructor
 	 * @param string $host
@@ -102,6 +109,9 @@ class CPATS extends RMCARD
 			
 			if ($data['temperature'] !== false && $data['humidity'] !== false) {
 				$data['dewPoint'] = $data['temperature'] - ((100 - $data['humidity']) / 5);
+				
+				// we do have enviro data
+				$this->hasEnvironmentalData = true;
 			}
 		}
 
