@@ -23,7 +23,7 @@ include('HttpRequest.php');
 				$blks[$i] = 0;
 
 			for($i = 0; $i < strlen($str); $i++)
-				$blks[$i >> 2] |= ord($str{$i}) << (($i % 4) * 8);
+				$blks[$i >> 2] |= ord($str[$i]) << (($i % 4) * 8);
 
 			$blks[$i >> 2] |= 0x80 << (($i % 4) * 8);
 			$blks[$nblk * 16 - 2] = strlen($str) * 8;
@@ -171,7 +171,7 @@ class RMCARD
 		$c = -1732584194;
 		$d = 271733878;
 
-		for($i = 0; $i < strlen($x); $i += 16)
+		for($i = 0; $i < count($x); $i += 16)
 		{
 			$olda = $a;
 			$oldb = $b;
