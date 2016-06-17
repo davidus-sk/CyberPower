@@ -155,7 +155,7 @@ class CPUPS extends RMCARD
 
 			// runtime
 			if (preg_match('/output.*?Remaining Runtime<\/span><[^>]+>(<[^>]+>)?([0-9\.]+)/is', $this->hr->result, $matches)) {
-				$data['frequency'] = floatval($matches[2]);
+				$data['runtime'] = floatval($matches[2]);
 			}
 		}
 
