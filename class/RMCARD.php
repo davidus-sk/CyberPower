@@ -249,6 +249,6 @@ class RMCARD
 			$d = add($d, $oldd);
 		}
 
-		return rhex($a) + rhex($b) + rhex($c) + rhex($d);
+		return rhex($a) . rhex($b) . rhex($c) . rhex($d);
 	}
 }
