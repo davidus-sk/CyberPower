@@ -9,11 +9,24 @@
 include(dirname(__FILE__) . '/class/CPATS.php');
 include(dirname(__FILE__) . '/CBW/RRD.php');
 
+// get options
+$options = getopt('h:o:');
+
 // list of ATS units to query
-$atsList = array('10.23.55.23', '10.23.55.25', '10.23.55.26', '10.23.55.28');
+$atsList = empty($options['h']) ? false : explode(',', $options['h']);
+
+// final graph (png) directory
+$outputDirectory = empty($options['o']) ? false : rtrim($options['o'], "\n\t\s\r/");
+
+// check input vars
+if (empty($atsList) || !is_array($atsList) || empty($outputDirectory) || !is_dir($outputDirectory)) {
+	die("Error: missing parameters!\n\nUsage:\n\t{$argv[0]} -h comma_separated_hosts -o output_directory\n");
+}
 
 // process all devices
 foreach ($atsList as $atsIp) {
+	// clean up the host
+	$atsIp = trim($atsIp);
 
 	// connect to ATS and login
 	$ats = new CPATS($atsIp, 'cyber', 'cyber');
@@ -46,8 +59,8 @@ foreach ($atsList as $atsIp) {
 	));
 
 	// graph DB
-	$rrd->graph($fields, -86400, '/var/www/vue/graph_ats_' . $atsIp . '_power_day.png');
-	$rrd->graph($fields, -604800, '/var/www/vue/graph_ats_' . $atsIp . '_power_week.png');
+	$rrd->graph($fields, -86400, $outputDirectory . '/graph_ats_' . $atsIp . '_power_day.png');
+	$rrd->graph($fields, -604800, $outputDirectory . '/graph_ats_' . $atsIp . '_power_week.png');
 
 	// environmental ///////////////////////////////////////////////////////////
 
@@ -71,6 +84,6 @@ foreach ($atsList as $atsIp) {
 	));
 
 	// graph DB
-	$rrd->graph($fields, -86400, '/var/www/vue/graph_ats_' . $atsIp . '_environmental_day.png');
-	$rrd->graph($fields, -604800, '/var/www/vue/graph_ats_' . $atsIp . '_environmental_week.png');
+	$rrd->graph($fields, -86400, $outputDirectory . '/graph_ats_' . $atsIp . '_environmental_day.png');
+	$rrd->graph($fields, -604800, $outputDirectory . '/graph_ats_' . $atsIp . '_environmental_week.png');
 }//foreach
