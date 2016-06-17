@@ -8,7 +8,7 @@ include('HttpRequest.php');
 			$str = "";
 
 			for($j = 0; $j <= 3; $j++) {
-				$str .= $hex_chr{($num >> ($j * 8 + 4)) & 0x0F} + $hex_chr{($num >> ($j * 8)) & 0x0F};
+				$str .= $hex_chr[($num >> ($j * 8 + 4)) & 0x0F] . $hex_chr[($num >> ($j * 8)) & 0x0F];
 			}
 
 			return $str;   
