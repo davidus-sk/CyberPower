@@ -59,7 +59,7 @@ class CPUPS extends RMCARD
 			'frequency' => false,
 		);
 
-		$this->hr->get('/update_status.html');
+		$this->hr->get('/status_update.html');
 
 		if ($this->hr->result) {
 			// status
@@ -96,7 +96,7 @@ class CPUPS extends RMCARD
 			
 		);
 
-		$this->hr->get('/update_status.html');
+		$this->hr->get('/status_update.html');
 
 		if ($this->hr->result) {
 			// status
@@ -140,7 +140,7 @@ class CPUPS extends RMCARD
 			'runtime' => false,
 		);
 
-		$this->hr->get('/update_status.html');
+		$this->hr->get('/status_update.html');
 
 		if ($this->hr->result) {
 			// status
@@ -172,7 +172,7 @@ class CPUPS extends RMCARD
 			'temperature' => false,
 		);
 
-		$this->hr->get('/summary_env_status.html');
+		$this->hr->get('/status_update.html');
 
 		if ($this->hr->result) {
 			// temperature
@@ -184,6 +184,8 @@ class CPUPS extends RMCARD
 				}
 			}
 		}
+
+		return $data;
 	}
 
 	/**
