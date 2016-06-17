@@ -2,6 +2,73 @@
 
 include('HttpRequest.php');
 
+		function rhex($num)
+		{   
+			$hex_chr = "0123456789abcdef";
+			$str = "";
+
+			for($j = 0; $j <= 3; $j++) {
+				$str .= $hex_chr{($num >> ($j * 8 + 4)) & 0x0F} + $hex_chr{($num >> ($j * 8)) & 0x0F};
+			}
+
+			return $str;   
+		}
+
+		function str2blks_MD5($str)
+		{
+			$nblk = ((strlen($str) + 8) >> 6) + 1;
+			$blks = array();
+
+			for($i = 0; $i < $nblk * 16; $i++)
+				$blks[$i] = 0;
+
+			for($i = 0; $i < strlen($str); $i++)
+				$blks[$i >> 2] |= ord($str{$i}) << (($i % 4) * 8);
+
+			$blks[$i >> 2] |= 0x80 << (($i % 4) * 8);
+			$blks[$nblk * 16 - 2] = strlen($str) * 8;
+
+			return $blks;
+		}
+
+		function add($x, $y)
+		{
+			$lsw = ($x & 0xFFFF) + ($y & 0xFFFF);
+			$msw = ($x >> 16) + ($y >> 16) + ($lsw >> 16);
+			return ($msw << 16) | ($lsw & 0xFFFF);   
+		}
+
+		function rol($num, $cnt)
+		{   
+			return ($num << $cnt) | ($num >> (32 - $cnt));
+		}
+
+		function cmn($q, $a, $b, $x, $s, $t)
+		{
+			return add(rol(add(add($a, $q), add($x, $t)), $s), $b);
+		}
+
+		function ff($a, $b, $c, $d, $x, $s, $t)
+		{
+			return cmn(($b & $c) | ((~$b) & $d), $a, $b, $x, $s, $t);
+		}
+
+		function gg($a, $b, $c, $d, $x, $s, $t)
+		{
+			return cmn(($b & $d) | ($c & (~$d)), $a, $b, $x, $s, $t);
+		}
+
+		function hh($a, $b, $c, $d, $x, $s, $t)
+		{
+			return cmn($b ^ $c ^ $d, $a, $b, $x, $s, $t);
+		}
+
+		function ii($a, $b, $c, $d, $x, $s, $t)
+		{
+			return cmn($c ^ ($b | (~$d)), $a, $b, $x, $s, $t);
+		}
+
+
 /**
  * Class which manages connection to CyberPower remote management card.
  * 
@@ -98,72 +165,6 @@ class RMCARD
 	 */
 	private function MD5($str)
 	{
-		function rhex($num)
-		{   
-			$hex_chr = "0123456789abcdef";
-			$str = "";
-
-			for($j = 0; $j <= 3; $j++) {
-				$str .= $hex_chr{($num >> ($j * 8 + 4)) & 0x0F} + $hex_chr{($num >> ($j * 8)) & 0x0F};
-			}
-
-			return $str;   
-		}
-
-		function str2blks_MD5($str)
-		{
-			$nblk = ((strlen($str) + 8) >> 6) + 1;
-			$blks = array();
-
-			for($i = 0; $i < $nblk * 16; $i++)
-				$blks[$i] = 0;
-
-			for($i = 0; $i < strlen($str); $i++)
-				$blks[$i >> 2] |= ord($str{$i}) << (($i % 4) * 8);
-
-			$blks[$i >> 2] |= 0x80 << (($i % 4) * 8);
-			$blks[$nblk * 16 - 2] = strlen($str) * 8;
-
-			return $blks;
-		}
-
-		function add($x, $y)
-		{
-			$lsw = ($x & 0xFFFF) + ($y & 0xFFFF);
-			$msw = ($x >> 16) + ($y >> 16) + ($lsw >> 16);
-			return ($msw << 16) | ($lsw & 0xFFFF);   
-		}
-
-		function rol($num, $cnt)
-		{   
-			return ($num << $cnt) | ($num >> (32 - $cnt));
-		}
-
-		function cmn($q, $a, $b, $x, $s, $t)
-		{
-			return add(rol(add(add($a, $q), add($x, $t)), $s), $b);
-		}
-
-		function ff($a, $b, $c, $d, $x, $s, $t)
-		{
-			return cmn(($b & $c) | ((~$b) & $d), $a, $b, $x, $s, $t);
-		}
-
-		function gg($a, $b, $c, $d, $x, $s, $t)
-		{
-			return cmn(($b & $d) | ($c & (~$d)), $a, $b, $x, $s, $t);
-		}
-
-		function hh($a, $b, $c, $d, $x, $s, $t)
-		{
-			return cmn($b ^ $c ^ $d, $a, $b, $x, $s, $t);
-		}
-
-		function ii($a, $b, $c, $d, $x, $s, $t)
-		{
-			return cmn($c ^ ($b | (~$d)), $a, $b, $x, $s, $t);
-		}
-
 		$x = str2blks_MD5($str);
 		$a = 1732584193;
 		$b = -271733879;
