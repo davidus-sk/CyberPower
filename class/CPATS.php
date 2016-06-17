@@ -228,16 +228,13 @@ class CPATS extends RMCARD
 	 */
 	public function getAllData()
 	{
-		$environmental = array(
+		$data = array(
+			'outlet' => $this->getOutletData(),
 			'environmental' => $this->getEnvironmentalData()
 		);
 
-		$outlet = array(
-			'outlets' => $this->getOutletData()
-		);
-
 		$status = $this->getStatusData();
-		
-		return array_merge($environmental, $outlet, $status);
+
+		return array_merge($data, $status);
 	}
 }

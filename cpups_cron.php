@@ -17,7 +17,7 @@
 include(dirname(__FILE__) . '/class/CPUPS.php');
 
 // flag file
-$fFile = '/tmp/cpups_cron.txt';
+$flagFile = '/tmp/cpups_cron.txt';
 
 // get options
 $options = getopt('h:u:p:t');
@@ -42,15 +42,15 @@ $d = $ups->getAllData();
 unset($ups);
 
 // are we running on batteries?
-if (!empty($d['input']['status']) && ($d['input']['status'] == 'XXX')) {
+if (!empty($d['input']['status']) && ($d['input']['status'] == 'Blackout')) {
 
 	// check the remaining runtime
 	if ($d['battery']['runtime'] < $timeLimit) {
 		$shutdown = false;
 		
 		// is this the second time we have battery online?
-		if (file_exists($fFile)) {
-			$time = file_get_contents($fFile);
+		if (file_exists($flagFile)) {
+			$time = file_get_contents($flagFile);
 
 			// is the file fresh?
 			if ((time() - $time) < 300) {
@@ -61,18 +61,18 @@ if (!empty($d['input']['status']) && ($d['input']['status'] == 'XXX')) {
 		// do we shutdown
 		if ($shutdown) {
 			// clean up
-			unlink($fFile);
+			unlink($flagFile);
 
 			// script must be running under privileged user account
 			`shutdown -h now`;
 		}
 
 		// write out current time into flag file
-		file_put_contents($fFile, time());
+		file_put_contents($flagFile, time());
 	} else {
 		// clean up
-		if (file_exists($fFile)) {
-			unlink($fFile);
+		if (file_exists($flagFile)) {
+			unlink($flagFile);
 		}
 	}
 }
