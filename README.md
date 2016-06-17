@@ -31,11 +31,13 @@ unset($ats);
 
 You can generate graphs using RRDTool. Scripts are included to help you get started; you may also tweak the `RRD.php` wrapper if you want different look and feel.
 You need to have the RRDTool library installed on the machine generating the graphs.
-Schedule the `cpups_graph.php` in your crontab file as follows:
+Schedule the `cpats_graph.php` in your crontab file as follows:
 
 ```
 * * * * * root php /path/to/cpats_graph.php -h comma_separated_hosts -o graph_directory
 ```
+
+The end result for the environment data should end up looking something like this:
 
 ![ATS Graph](https://raw.githubusercontent.com/davidus-sk/CyberPower/master/cpats_graph.png "ATS Graph")
 

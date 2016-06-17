@@ -78,9 +78,9 @@ foreach ($atsList as $atsIp) {
 
 	// update DB
 	$rrd->update(array(
-		$data['environmental']['temperature'] === false ? 'U' : $data['environmental']['temperature'] * (9/5) + 32,
+		$data['environmental']['temperature'] === false ? 'U' : ($data['environmental']['temperature'] * (9/5) + 32),
 		$data['environmental']['humidity'] === false ? 'U' : $data['environmental']['humidity'],
-		$data['environmental']['dewPoint'] === false ? 'U' : $data['environmental']['dewPoint'] * (9/5) + 32,
+		$data['environmental']['dewPoint'] === false ? 'U' : ($data['environmental']['dewPoint'] * (9/5) + 32),
 	));
 
 	// graph DB
