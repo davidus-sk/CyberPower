@@ -84,19 +84,19 @@ class CBW
 	 */
 	public function get1WireData($legend = array())
 	{
-		$data = $this->processXml(array('sensor1', 'sensor2', 'sensor3', 'sensor4'));
+		$fields = array_keys($legend);
+		
+		if (!empty($fields)) {
+			$data = $this->processXml($fields);
 
-		if (empty($legend)) {
-			return $data;
-		} else {
 			$output = array();
 			$i = 0;
 
-			foreach ($legend as $name => $unit) {
+			foreach ($legend as $key => $value) {
 				$output[] = array(
-					'name' => $name,
+					'name' => $value['name'],
 					'value' => empty($data[$i]) ? null : $data[$i],
-					'string' => empty($data[$i]) ? null : ($data[$i] . ' ' . $unit)
+					'string' => empty($data[$i]) ? null : ($data[$i] . ' ' . $value['unit'])
 				);
 
 				$i++;
