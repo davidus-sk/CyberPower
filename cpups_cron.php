@@ -14,10 +14,10 @@
  */
 
 // include the class
-include(dirname(__FILE__) . '/class/CPUPS.php');
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . 'CPUPS.php');
 
 // flag file
-$flagFile = '/tmp/cpups_cron.txt';
+$flagFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'cpups_cron.txt';
 
 // get options
 $options = getopt('h:u:p:t');
@@ -50,6 +50,7 @@ if (!empty($d['input']['status']) && ($d['input']['status'] == 'Blackout')) {
 		
 		// is this the second time we have battery online?
 		if (file_exists($flagFile)) {
+			// get stored tmestamp
 			$time = file_get_contents($flagFile);
 
 			// is the file fresh?
@@ -62,17 +63,22 @@ if (!empty($d['input']['status']) && ($d['input']['status'] == 'Blackout')) {
 		if ($shutdown) {
 			// clean up
 			unlink($flagFile);
+			clearstatcache();
 
 			// script must be running under privileged user account
 			`shutdown -h now`;
+			
+			die("Shutting the system down!\n");
 		}
 
 		// write out current time into flag file
 		file_put_contents($flagFile, time());
 	} else {
+
 		// clean up
 		if (file_exists($flagFile)) {
 			unlink($flagFile);
+			clearstatcache();
 		}
 	}
 }
