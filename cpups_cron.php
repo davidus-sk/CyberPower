@@ -65,8 +65,20 @@ if (!empty($d['input']['status']) && ($d['input']['status'] == 'Blackout')) {
 			unlink($flagFile);
 			clearstatcache();
 
-			// script must be running under privileged user account
-			`shutdown -h now`;
+			// shutdown command must be running under privileged user account
+			
+			// do this if Windows
+			if (stripos(PHP_OS, 'Win') === 0) {
+				`shutdown -t 30 -s`;
+			} else
+			// do this if Linux
+			if (stripos(PHP_OS, 'Linux') !== false)
+				`shutdown -h now`;
+			}
+			// add more OS types if needed
+			else {
+				
+			}
 			
 			die("Shutting the system down!\n");
 		}
